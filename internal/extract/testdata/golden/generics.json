@@ -1,0 +1,684 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "mintlify-go-extractor",
+    "version": "test",
+    "go": "go-test"
+  },
+  "module": "example.com/generics",
+  "goos": "linux",
+  "goarch": "amd64",
+  "commentSyntax": "markdown",
+  "packages": [
+    {
+      "importPath": "example.com/generics",
+      "name": "generics",
+      "dir": ".",
+      "funcs": [
+        {
+          "name": "Sum",
+          "decl": [
+            {
+              "t": "func Sum[Item "
+            },
+            {
+              "t": "Number",
+              "ref": {
+                "name": "Number"
+              }
+            },
+            {
+              "t": "](values ...Item) Item"
+            }
+          ],
+          "doc": "Sum adds numbers. Its type parameter shadows [Item](go:example.com/generics#Item).",
+          "typeParams": [
+            {
+              "name": "Item",
+              "constraint": [
+                {
+                  "t": "Number",
+                  "ref": {
+                    "name": "Number"
+                  }
+                }
+              ]
+            }
+          ],
+          "params": [
+            {
+              "name": "values",
+              "type": [
+                {
+                  "t": "...Item"
+                }
+              ]
+            }
+          ],
+          "results": [
+            {
+              "type": [
+                {
+                  "t": "Item"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Base",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Base struct{ ID string }"
+            }
+          ],
+          "doc": "Base is embedded by value.",
+          "fields": [
+            {
+              "name": "ID",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Constraint",
+          "kind": "interface",
+          "decl": [
+            {
+              "t": "type Constraint interface {\n\terror\n\tany\n\t"
+            },
+            {
+              "t": "Store",
+              "ref": {
+                "name": "Store"
+              }
+            },
+            {
+              "t": "\n\tint | string\n\tint\n}"
+            }
+          ],
+          "doc": "Constraint mixes predeclared interfaces, a local interface, and type terms.",
+          "fields": [
+            {
+              "name": "error",
+              "type": [
+                {
+                  "t": "error"
+                }
+              ],
+              "embedded": true
+            },
+            {
+              "name": "any",
+              "type": [
+                {
+                  "t": "any"
+                }
+              ],
+              "embedded": true
+            },
+            {
+              "name": "Store",
+              "type": [
+                {
+                  "t": "Store",
+                  "ref": {
+                    "name": "Store"
+                  }
+                }
+              ],
+              "embedded": true
+            }
+          ]
+        },
+        {
+          "name": "Item",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Item struct{}"
+            }
+          ],
+          "doc": "Item is an item."
+        },
+        {
+          "name": "Meta",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Meta struct{ Version int }"
+            }
+          ],
+          "doc": "Meta is embedded by pointer.",
+          "fields": [
+            {
+              "name": "Version",
+              "type": [
+                {
+                  "t": "int"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Number",
+          "kind": "interface",
+          "decl": [
+            {
+              "t": "type Number interface {\n\t~int | ~int64 | ~float64\n}"
+            }
+          ],
+          "doc": "Number is a numeric constraint."
+        },
+        {
+          "name": "Opt",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Opt[T comparable] struct {\n\tValue T\n\t// contains filtered or unexported fields\n}"
+            }
+          ],
+          "doc": "Opt is an optional value.",
+          "typeParams": [
+            {
+              "name": "T",
+              "constraint": [
+                {
+                  "t": "comparable"
+                }
+              ]
+            }
+          ],
+          "fields": [
+            {
+              "name": "Value",
+              "type": [
+                {
+                  "t": "T"
+                }
+              ],
+              "doc": "Value is the value."
+            }
+          ],
+          "methods": [
+            {
+              "name": "Or",
+              "recv": "Opt[T]",
+              "decl": [
+                {
+                  "t": "func (o "
+                },
+                {
+                  "t": "Opt",
+                  "ref": {
+                    "name": "Opt"
+                  }
+                },
+                {
+                  "t": "[T]) Or(fallback T) T"
+                }
+              ],
+              "doc": "Or returns the value or fallback.",
+              "params": [
+                {
+                  "name": "fallback",
+                  "type": [
+                    {
+                      "t": "T"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "T"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "funcs": [
+            {
+              "name": "Lookup",
+              "decl": [
+                {
+                  "t": "func Lookup[K comparable, V any](pairs []"
+                },
+                {
+                  "t": "Pair",
+                  "ref": {
+                    "name": "Pair"
+                  }
+                },
+                {
+                  "t": "[K, V], key K) ("
+                },
+                {
+                  "t": "Opt",
+                  "ref": {
+                    "name": "Opt"
+                  }
+                },
+                {
+                  "t": "[V], bool)"
+                }
+              ],
+              "doc": "Lookup returns the [Pair](go:example.com/generics#Pair) for key.",
+              "typeParams": [
+                {
+                  "name": "K",
+                  "constraint": [
+                    {
+                      "t": "comparable"
+                    }
+                  ]
+                },
+                {
+                  "name": "V",
+                  "constraint": [
+                    {
+                      "t": "any"
+                    }
+                  ]
+                }
+              ],
+              "params": [
+                {
+                  "name": "pairs",
+                  "type": [
+                    {
+                      "t": "[]"
+                    },
+                    {
+                      "t": "Pair",
+                      "ref": {
+                        "name": "Pair"
+                      }
+                    },
+                    {
+                      "t": "[K, V]"
+                    }
+                  ]
+                },
+                {
+                  "name": "key",
+                  "type": [
+                    {
+                      "t": "K"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "Opt",
+                      "ref": {
+                        "name": "Opt"
+                      }
+                    },
+                    {
+                      "t": "[V]"
+                    }
+                  ]
+                },
+                {
+                  "type": [
+                    {
+                      "t": "bool"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "NewOpt",
+              "decl": [
+                {
+                  "t": "func NewOpt[T comparable](v T) "
+                },
+                {
+                  "t": "Opt",
+                  "ref": {
+                    "name": "Opt"
+                  }
+                },
+                {
+                  "t": "[T]"
+                }
+              ],
+              "doc": "NewOpt returns a set [Opt](go:example.com/generics#Opt).",
+              "typeParams": [
+                {
+                  "name": "T",
+                  "constraint": [
+                    {
+                      "t": "comparable"
+                    }
+                  ]
+                }
+              ],
+              "params": [
+                {
+                  "name": "v",
+                  "type": [
+                    {
+                      "t": "T"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "Opt",
+                      "ref": {
+                        "name": "Opt"
+                      }
+                    },
+                    {
+                      "t": "[T]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Page",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Page[T any] struct{ Items []T }"
+            }
+          ],
+          "doc": "Page is a generic type embedded with a type argument.",
+          "typeParams": [
+            {
+              "name": "T",
+              "constraint": [
+                {
+                  "t": "any"
+                }
+              ]
+            }
+          ],
+          "fields": [
+            {
+              "name": "Items",
+              "type": [
+                {
+                  "t": "[]T"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Pair",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Pair[K comparable, V any] struct {\n\tKey   K\n\tValue V\n}"
+            }
+          ],
+          "doc": "Pair holds two values.",
+          "typeParams": [
+            {
+              "name": "K",
+              "constraint": [
+                {
+                  "t": "comparable"
+                }
+              ]
+            },
+            {
+              "name": "V",
+              "constraint": [
+                {
+                  "t": "any"
+                }
+              ]
+            }
+          ],
+          "fields": [
+            {
+              "name": "Key",
+              "type": [
+                {
+                  "t": "K"
+                }
+              ]
+            },
+            {
+              "name": "Value",
+              "type": [
+                {
+                  "t": "V"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Resource",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Resource struct {\n\t"
+            },
+            {
+              "t": "Base",
+              "ref": {
+                "name": "Base"
+              }
+            },
+            {
+              "t": "\n\t*"
+            },
+            {
+              "t": "Meta",
+              "ref": {
+                "name": "Meta"
+              }
+            },
+            {
+              "t": "\n\t"
+            },
+            {
+              "t": "Page",
+              "ref": {
+                "name": "Page"
+              }
+            },
+            {
+              "t": "["
+            },
+            {
+              "t": "Item",
+              "ref": {
+                "name": "Item"
+              }
+            },
+            {
+              "t": "]\n}"
+            }
+          ],
+          "doc": "Resource embeds a local type by value, by pointer, and generically.",
+          "fields": [
+            {
+              "name": "Base",
+              "type": [
+                {
+                  "t": "Base",
+                  "ref": {
+                    "name": "Base"
+                  }
+                }
+              ],
+              "embedded": true
+            },
+            {
+              "name": "Meta",
+              "type": [
+                {
+                  "t": "*"
+                },
+                {
+                  "t": "Meta",
+                  "ref": {
+                    "name": "Meta"
+                  }
+                }
+              ],
+              "embedded": true
+            },
+            {
+              "name": "Page",
+              "type": [
+                {
+                  "t": "Page",
+                  "ref": {
+                    "name": "Page"
+                  }
+                },
+                {
+                  "t": "["
+                },
+                {
+                  "t": "Item",
+                  "ref": {
+                    "name": "Item"
+                  }
+                },
+                {
+                  "t": "]"
+                }
+              ],
+              "embedded": true
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "kind": "interface",
+          "decl": [
+            {
+              "t": "type Store interface {\n\tGet(key string) (string, bool)\n}"
+            }
+          ],
+          "doc": "Store is an interface embedded by name.",
+          "methods": [
+            {
+              "name": "Get",
+              "recv": "Store",
+              "decl": [
+                {
+                  "t": "func Get(key string) (string, bool)"
+                }
+              ],
+              "params": [
+                {
+                  "name": "key",
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                },
+                {
+                  "type": [
+                    {
+                      "t": "bool"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Stringish",
+          "kind": "interface",
+          "decl": [
+            {
+              "t": "type Stringish interface {\n\t~string\n\tfmt."
+            },
+            {
+              "t": "Stringer",
+              "ref": {
+                "pkg": "fmt",
+                "name": "Stringer"
+              }
+            },
+            {
+              "t": "\n\tString() string\n}"
+            }
+          ],
+          "doc": "Stringish is satisfied by string types that can print themselves.",
+          "fields": [
+            {
+              "name": "Stringer",
+              "type": [
+                {
+                  "t": "fmt."
+                },
+                {
+                  "t": "Stringer",
+                  "ref": {
+                    "pkg": "fmt",
+                    "name": "Stringer"
+                  }
+                }
+              ],
+              "embedded": true
+            }
+          ],
+          "methods": [
+            {
+              "name": "String",
+              "recv": "Stringish",
+              "decl": [
+                {
+                  "t": "func String() string"
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

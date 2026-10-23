@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "mintlify-go-extractor",
+    "version": "test",
+    "go": "go-test"
+  },
+  "module": "example.com/hostile",
+  "goos": "linux",
+  "goarch": "amd64",
+  "commentSyntax": "markdown",
+  "packages": [
+    {
+      "importPath": "example.com/hostile",
+      "name": "hostile",
+      "dir": ".",
+      "synopsis": "Package hostile carries doc text that is special in MDX but ordinary in Go.",
+      "doc": "Package hostile carries doc text that is special in MDX but ordinary in Go.\n\nUse map{a: b} and struct{}{} or <b>bold</b> and {props.x}.\n\nimport x from \"y\"\n\nexport GOPRIVATE=example.com/*",
+      "readme": "# hostile\n\nHTML blocks hide ESM from a paragraph-only check.\n\n<div>\nimport fs from \"node:fs\"\n</div>\n\n<p>\nexport default function X(){}\n</p>\n\n<details>\nexport FOO=bar\n</details>\n\n<details>\n<summary>Env</summary>\n\nexport FOO=bar\n\n</details>\n\n<pre>\nfirst\n\nimport os from \"node:os\"\n</pre>\n\n<b>import</b> starts this paragraph after an inline tag.\n\nA \"quoted\\r\\rtag\" is <i>fine</i>.\n\n[imp](javascript:alert(1))ort x from \"y\"\n\n[exp](javascript:x)ort const a = 1\n\n![imp](data:text/html,x)ort x from \"y\"\n\nSee [one][r1], [two][r2], [three][r3], and [four][r4].\n\n[r1]: javascript&amp;colon;alert(1)\n[r2]: javascript&#58;alert(2)\n[r3]: javascript&#x3a;alert(3)\n[r4]: <javascript&colon;alert(4)>",
+      "funcs": [
+        {
+          "name": "Do",
+          "decl": [
+            {
+              "t": "func Do(input map[string]struct{}) (result struct {\n\tCode int\n}, err error)"
+            }
+          ],
+          "doc": "Do takes an argument named like a tag and returns <error>.\n\n<div>\nimport fs from \"node:fs\"\n</div>\n\n<b>export</b> is the first word after a tag.\n\n[imp](javascript:alert(1))ort x from \"y\"\n\nSee [one][r1].\n\n[r1]: javascript&colon;alert(1)",
+          "params": [
+            {
+              "name": "input",
+              "type": [
+                {
+                  "t": "map[string]struct{}"
+                }
+              ]
+            }
+          ],
+          "results": [
+            {
+              "name": "result",
+              "type": [
+                {
+                  "t": "struct {\n\tCode int\n}"
+                }
+              ]
+            },
+            {
+              "name": "err",
+              "type": [
+                {
+                  "t": "error"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Record",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Record struct {\n\tID  string `json:\"id\"`\n\tRaw string `json:\"raw\"\n\t \t extra:\"{alert(1)}\"`\n\tFn func(\n\t\ta int,\n\t\tb string,\n\t) error\n}"
+            }
+          ],
+          "doc": "Record has tags and docs that downstream clients must escape, not interpret.\n\nA field like <Field/> or {value} must stay text.",
+          "fields": [
+            {
+              "name": "ID",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ],
+              "doc": "ID is `json:\"id\"` on the wire and uses {braces} in prose.",
+              "tag": "json:\"id\""
+            },
+            {
+              "name": "Raw",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ],
+              "doc": "Raw has a multi-line tag.",
+              "tag": "json:\"raw\"\n\t \t extra:\"{alert(1)}\""
+            },
+            {
+              "name": "Fn",
+              "type": [
+                {
+                  "t": "func(\n\ta int,\n\tb string,\n) error"
+                }
+              ],
+              "doc": "Fn is a function-typed field whose signature spans lines."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

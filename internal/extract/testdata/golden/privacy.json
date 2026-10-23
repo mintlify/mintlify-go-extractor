@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "mintlify-go-extractor",
+    "version": "test",
+    "go": "go-test"
+  },
+  "module": "example.com/privacy",
+  "goos": "linux",
+  "goarch": "amd64",
+  "commentSyntax": "markdown",
+  "packages": [
+    {
+      "importPath": "example.com/privacy",
+      "name": "privacy",
+      "dir": ".",
+      "types": [
+        {
+          "name": "Record",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Record struct {\n\tAt      time."
+            },
+            {
+              "t": "Time",
+              "ref": {
+                "pkg": "time",
+                "name": "Time"
+              }
+            },
+            {
+              "t": "\n\tSub     subpkg."
+            },
+            {
+              "t": "Thing",
+              "ref": {
+                "pkg": "example.com/privacy/sub",
+                "name": "Thing"
+              }
+            },
+            {
+              "t": "\n\tPrivate priv."
+            },
+            {
+              "t": "Model",
+              "ref": {
+                "pkg": "corp.example/sdk/models",
+                "name": "Model",
+                "private": true
+              }
+            },
+            {
+              "t": "\n\tThing   thing."
+            },
+            {
+              "t": "Value",
+              "ref": {
+                "pkg": "github.com/public/go-thing",
+                "name": "Value"
+              }
+            },
+            {
+              "t": "\n\tWidget  widgets."
+            },
+            {
+              "t": "Widget",
+              "ref": {
+                "pkg": "github.com/public/widgets/v2",
+                "name": "Widget"
+              }
+            },
+            {
+              "t": "\n\tBuilder Builder\n}"
+            }
+          ],
+          "doc": "Record links to several packages. Its [corp.example/sdk/models.Model] stays private.",
+          "fields": [
+            {
+              "name": "At",
+              "type": [
+                {
+                  "t": "time."
+                },
+                {
+                  "t": "Time",
+                  "ref": {
+                    "pkg": "time",
+                    "name": "Time"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Sub",
+              "type": [
+                {
+                  "t": "subpkg."
+                },
+                {
+                  "t": "Thing",
+                  "ref": {
+                    "pkg": "example.com/privacy/sub",
+                    "name": "Thing"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Private",
+              "type": [
+                {
+                  "t": "priv."
+                },
+                {
+                  "t": "Model",
+                  "ref": {
+                    "pkg": "corp.example/sdk/models",
+                    "name": "Model",
+                    "private": true
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Thing",
+              "type": [
+                {
+                  "t": "thing."
+                },
+                {
+                  "t": "Value",
+                  "ref": {
+                    "pkg": "github.com/public/go-thing",
+                    "name": "Value"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Widget",
+              "type": [
+                {
+                  "t": "widgets."
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "pkg": "github.com/public/widgets/v2",
+                    "name": "Widget"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Builder",
+              "type": [
+                {
+                  "t": "Builder"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "importPath": "example.com/privacy/sub",
+      "name": "subpkg",
+      "dir": "sub",
+      "types": [
+        {
+          "name": "Thing",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Thing struct{}"
+            }
+          ],
+          "doc": "Thing lives in a package whose name differs from its directory."
+        }
+      ]
+    }
+  ]
+}

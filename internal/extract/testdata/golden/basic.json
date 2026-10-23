@@ -1,0 +1,949 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "mintlify-go-extractor",
+    "version": "test",
+    "go": "go-test"
+  },
+  "module": "example.com/acme",
+  "goos": "linux",
+  "goarch": "amd64",
+  "commentSyntax": "markdown",
+  "packages": [
+    {
+      "importPath": "example.com/acme",
+      "name": "acme",
+      "dir": ".",
+      "synopsis": "Package acme is the Go client for the **Acme** API.",
+      "doc": "Package acme is the Go client for the **Acme** API.\n\nCreate a client with [NewClient](go:example.com/acme#NewClient), then call [Client.Do](go:example.com/acme#Client.Do). Options live in [option.RequestOption](go:example.com/acme/option#RequestOption).",
+      "readme": "# Acme Go SDK\n\nThe Acme Go library provides access to the Acme API.\n\n## Installation\n\n```sh\ngo get example.com/acme\n```\n\nSee [the option package](option/README.md) and ![logo](assets/logo.png).",
+      "consts": [
+        {
+          "names": [
+            "DefaultTimeout"
+          ],
+          "decl": [
+            {
+              "t": "const DefaultTimeout = 30"
+            }
+          ],
+          "doc": "DefaultTimeout is the default request timeout in seconds."
+        }
+      ],
+      "vars": [
+        {
+          "names": [
+            "ErrNotFound"
+          ],
+          "decl": [
+            {
+              "t": "var ErrNotFound = errors."
+            },
+            {
+              "t": "New",
+              "ref": {
+                "pkg": "errors",
+                "name": "New"
+              }
+            },
+            {
+              "t": "(\"not found\")"
+            }
+          ],
+          "doc": "ErrNotFound is returned when a widget does not exist."
+        }
+      ],
+      "types": [
+        {
+          "name": "Alias",
+          "kind": "alias",
+          "decl": [
+            {
+              "t": "type Alias = "
+            },
+            {
+              "t": "Widget",
+              "ref": {
+                "name": "Widget"
+              }
+            }
+          ],
+          "doc": "Alias refers to [Widget](go:example.com/acme#Widget)."
+        },
+        {
+          "name": "Client",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Client struct {\n\tBaseURL string `json:\"base_url\"`\n\n\tWidgets *"
+            },
+            {
+              "t": "WidgetService",
+              "ref": {
+                "name": "WidgetService"
+              }
+            },
+            {
+              "t": "\n\tOptions []option."
+            },
+            {
+              "t": "RequestOption",
+              "ref": {
+                "pkg": "example.com/acme/option",
+                "name": "RequestOption"
+              }
+            },
+            {
+              "t": "\n\tLegacy  string\n\n\tio."
+            },
+            {
+              "t": "Reader",
+              "ref": {
+                "pkg": "io",
+                "name": "Reader"
+              }
+            },
+            {
+              "t": "\n\t// contains filtered or unexported fields\n}"
+            }
+          ],
+          "doc": "Client calls the Acme API. Create one with [NewClient](go:example.com/acme#NewClient) and see [Client.Do](go:example.com/acme#Client.Do).\n\nIt is safe for **concurrent** use. See [the guide](https://acme.dev/guide), [io.Reader](go:io#Reader), [Missing], and `[Widget]`.",
+          "fields": [
+            {
+              "name": "BaseURL",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ],
+              "doc": "BaseURL overrides the API endpoint.",
+              "tag": "json:\"base_url\""
+            },
+            {
+              "name": "Widgets",
+              "type": [
+                {
+                  "t": "*"
+                },
+                {
+                  "t": "WidgetService",
+                  "ref": {
+                    "name": "WidgetService"
+                  }
+                }
+              ],
+              "doc": "Widgets manages widgets."
+            },
+            {
+              "name": "Options",
+              "type": [
+                {
+                  "t": "[]option."
+                },
+                {
+                  "t": "RequestOption",
+                  "ref": {
+                    "pkg": "example.com/acme/option",
+                    "name": "RequestOption"
+                  }
+                }
+              ],
+              "doc": "Options apply to every request."
+            },
+            {
+              "name": "Legacy",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ],
+              "doc": "Legacy is kept for compatibility.",
+              "deprecated": "Use [Client.Do](go:example.com/acme#Client.Do) instead."
+            },
+            {
+              "name": "Reader",
+              "type": [
+                {
+                  "t": "io."
+                },
+                {
+                  "t": "Reader",
+                  "ref": {
+                    "pkg": "io",
+                    "name": "Reader"
+                  }
+                }
+              ],
+              "embedded": true
+            }
+          ],
+          "methods": [
+            {
+              "name": "Do",
+              "recv": "*Client",
+              "decl": [
+                {
+                  "t": "func (c *"
+                },
+                {
+                  "t": "Client",
+                  "ref": {
+                    "name": "Client"
+                  }
+                },
+                {
+                  "t": ") Do(ctx context."
+                },
+                {
+                  "t": "Context",
+                  "ref": {
+                    "pkg": "context",
+                    "name": "Context"
+                  }
+                },
+                {
+                  "t": ", body io."
+                },
+                {
+                  "t": "Reader",
+                  "ref": {
+                    "pkg": "io",
+                    "name": "Reader"
+                  }
+                },
+                {
+                  "t": ") (*"
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "name": "Widget"
+                  }
+                },
+                {
+                  "t": ", error)"
+                }
+              ],
+              "doc": "Do sends a request and returns the resulting [Widget](go:example.com/acme#Widget).",
+              "params": [
+                {
+                  "name": "ctx",
+                  "type": [
+                    {
+                      "t": "context."
+                    },
+                    {
+                      "t": "Context",
+                      "ref": {
+                        "pkg": "context",
+                        "name": "Context"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "body",
+                  "type": [
+                    {
+                      "t": "io."
+                    },
+                    {
+                      "t": "Reader",
+                      "ref": {
+                        "pkg": "io",
+                        "name": "Reader"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "*"
+                    },
+                    {
+                      "t": "Widget",
+                      "ref": {
+                        "name": "Widget"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": [
+                    {
+                      "t": "error"
+                    }
+                  ]
+                }
+              ],
+              "examples": [
+                {
+                  "code": "fmt.Println(\"done\")"
+                }
+              ]
+            },
+            {
+              "name": "Token",
+              "recv": "*Client",
+              "decl": [
+                {
+                  "t": "func (c *"
+                },
+                {
+                  "t": "Client",
+                  "ref": {
+                    "name": "Client"
+                  }
+                },
+                {
+                  "t": ") Token() vault."
+                },
+                {
+                  "t": "Token",
+                  "ref": {
+                    "pkg": "example.com/acme/internal/secret",
+                    "name": "Token"
+                  }
+                }
+              ],
+              "doc": "Token returns the client's secret token.",
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "vault."
+                    },
+                    {
+                      "t": "Token",
+                      "ref": {
+                        "pkg": "example.com/acme/internal/secret",
+                        "name": "Token"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "funcs": [
+            {
+              "name": "NewClient",
+              "decl": [
+                {
+                  "t": "func NewClient(opts ...option."
+                },
+                {
+                  "t": "RequestOption",
+                  "ref": {
+                    "pkg": "example.com/acme/option",
+                    "name": "RequestOption"
+                  }
+                },
+                {
+                  "t": ") *"
+                },
+                {
+                  "t": "Client",
+                  "ref": {
+                    "name": "Client"
+                  }
+                }
+              ],
+              "doc": "NewClient returns a [Client](go:example.com/acme#Client) configured with opts.",
+              "params": [
+                {
+                  "name": "opts",
+                  "type": [
+                    {
+                      "t": "...option."
+                    },
+                    {
+                      "t": "RequestOption",
+                      "ref": {
+                        "pkg": "example.com/acme/option",
+                        "name": "RequestOption"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "*"
+                    },
+                    {
+                      "t": "Client",
+                      "ref": {
+                        "name": "Client"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "examples": [
+                {
+                  "code": "client := acme.NewClient()\nfmt.Println(client.BaseURL == \"\")",
+                  "output": "true\n"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "kind": "defined",
+          "decl": [
+            {
+              "t": "type Color int"
+            }
+          ],
+          "doc": "Color is a color used by widgets.",
+          "consts": [
+            {
+              "names": [
+                "Red",
+                "Green"
+              ],
+              "decl": [
+                {
+                  "t": "const (\n\t// Red is red.\n\tRed   "
+                },
+                {
+                  "t": "Color",
+                  "ref": {
+                    "name": "Color"
+                  }
+                },
+                {
+                  "t": " = iota\n\tGreen       // Green is green.\n)"
+                }
+              ],
+              "doc": "Colors supported by widgets."
+            }
+          ]
+        },
+        {
+          "name": "Handler",
+          "kind": "defined",
+          "decl": [
+            {
+              "t": "type Handler func(w *"
+            },
+            {
+              "t": "Widget",
+              "ref": {
+                "name": "Widget"
+              }
+            },
+            {
+              "t": ") error"
+            }
+          ],
+          "doc": "Handler handles a widget."
+        },
+        {
+          "name": "Settings",
+          "kind": "alias",
+          "decl": [
+            {
+              "t": "type Settings = struct {\n\tTimeout int\n}"
+            }
+          ],
+          "doc": "Settings configures a request.",
+          "fields": [
+            {
+              "name": "Timeout",
+              "type": [
+                {
+                  "t": "int"
+                }
+              ],
+              "doc": "Timeout is the request timeout in seconds."
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "kind": "interface",
+          "decl": [
+            {
+              "t": "type Store interface {\n\tio."
+            },
+            {
+              "t": "Closer",
+              "ref": {
+                "pkg": "io",
+                "name": "Closer"
+              }
+            },
+            {
+              "t": "\n\tSave(ctx context."
+            },
+            {
+              "t": "Context",
+              "ref": {
+                "pkg": "context",
+                "name": "Context"
+              }
+            },
+            {
+              "t": ", w *"
+            },
+            {
+              "t": "Widget",
+              "ref": {
+                "name": "Widget"
+              }
+            },
+            {
+              "t": ") error\n\t// contains filtered or unexported methods\n}"
+            }
+          ],
+          "doc": "Store persists widgets.",
+          "fields": [
+            {
+              "name": "Closer",
+              "type": [
+                {
+                  "t": "io."
+                },
+                {
+                  "t": "Closer",
+                  "ref": {
+                    "pkg": "io",
+                    "name": "Closer"
+                  }
+                }
+              ],
+              "embedded": true
+            }
+          ],
+          "methods": [
+            {
+              "name": "Save",
+              "recv": "Store",
+              "decl": [
+                {
+                  "t": "func Save(ctx context."
+                },
+                {
+                  "t": "Context",
+                  "ref": {
+                    "pkg": "context",
+                    "name": "Context"
+                  }
+                },
+                {
+                  "t": ", w *"
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "name": "Widget"
+                  }
+                },
+                {
+                  "t": ") error"
+                }
+              ],
+              "doc": "Save stores w.",
+              "params": [
+                {
+                  "name": "ctx",
+                  "type": [
+                    {
+                      "t": "context."
+                    },
+                    {
+                      "t": "Context",
+                      "ref": {
+                        "pkg": "context",
+                        "name": "Context"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "w",
+                  "type": [
+                    {
+                      "t": "*"
+                    },
+                    {
+                      "t": "Widget",
+                      "ref": {
+                        "name": "Widget"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "error"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Widget",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Widget struct {\n\tID    string\n\tColor "
+            },
+            {
+              "t": "Color",
+              "ref": {
+                "name": "Color"
+              }
+            },
+            {
+              "t": "\n\tMeta  yaml."
+            },
+            {
+              "t": "Node",
+              "ref": {
+                "pkg": "gopkg.in/yaml.v3",
+                "name": "Node"
+              }
+            },
+            {
+              "t": "\n}"
+            }
+          ],
+          "doc": "Widget is a widget. Call [Widget.Fields](go:example.com/acme#Widget.Fields) to list its field names.",
+          "fields": [
+            {
+              "name": "ID",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ]
+            },
+            {
+              "name": "Color",
+              "type": [
+                {
+                  "t": "Color",
+                  "ref": {
+                    "name": "Color"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Meta",
+              "type": [
+                {
+                  "t": "yaml."
+                },
+                {
+                  "t": "Node",
+                  "ref": {
+                    "pkg": "gopkg.in/yaml.v3",
+                    "name": "Node"
+                  }
+                }
+              ]
+            }
+          ],
+          "methods": [
+            {
+              "name": "Fields",
+              "recv": "*Widget",
+              "decl": [
+                {
+                  "t": "func (w *"
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "name": "Widget"
+                  }
+                },
+                {
+                  "t": ") Fields() []string"
+                }
+              ],
+              "doc": "Fields lists the widget's field names.",
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "[]string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "funcs": [
+            {
+              "name": "Parse",
+              "decl": [
+                {
+                  "t": "func Parse(input string) ("
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "name": "Widget"
+                  }
+                },
+                {
+                  "t": ", error)"
+                }
+              ],
+              "doc": "Parse parses a widget.\n\n# Format\n\nThe input looks like:\n\n\tid=1 color=red",
+              "params": [
+                {
+                  "name": "input",
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "Widget",
+                      "ref": {
+                        "name": "Widget"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": [
+                    {
+                      "t": "error"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "WidgetService",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type WidgetService struct {\n\t// contains filtered or unexported fields\n}"
+            }
+          ],
+          "doc": "WidgetService manages widgets.",
+          "deprecated": "Use [Client](go:example.com/acme#Client) directly.",
+          "methods": [
+            {
+              "name": "Get",
+              "recv": "*WidgetService",
+              "decl": [
+                {
+                  "t": "func (s *"
+                },
+                {
+                  "t": "WidgetService",
+                  "ref": {
+                    "name": "WidgetService"
+                  }
+                },
+                {
+                  "t": ") Get(ctx context."
+                },
+                {
+                  "t": "Context",
+                  "ref": {
+                    "pkg": "context",
+                    "name": "Context"
+                  }
+                },
+                {
+                  "t": ", id string) (*"
+                },
+                {
+                  "t": "Widget",
+                  "ref": {
+                    "name": "Widget"
+                  }
+                },
+                {
+                  "t": ", error)"
+                }
+              ],
+              "doc": "Get fetches a widget by ID.",
+              "params": [
+                {
+                  "name": "ctx",
+                  "type": [
+                    {
+                      "t": "context."
+                    },
+                    {
+                      "t": "Context",
+                      "ref": {
+                        "pkg": "context",
+                        "name": "Context"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "id",
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "*"
+                    },
+                    {
+                      "t": "Widget",
+                      "ref": {
+                        "name": "Widget"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": [
+                    {
+                      "t": "error"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "importPath": "example.com/acme/legacy",
+      "name": "legacy",
+      "dir": "legacy",
+      "synopsis": "Package legacy holds the v1 client.",
+      "doc": "Package legacy holds the v1 client.",
+      "deprecated": "Use [example.com/acme.Client](go:example.com/acme#Client) instead.",
+      "types": [
+        {
+          "name": "Client",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Client struct{}"
+            }
+          ],
+          "doc": "Client is the v1 client."
+        }
+      ]
+    },
+    {
+      "importPath": "example.com/acme/option",
+      "name": "option",
+      "dir": "option",
+      "readme": "# option\n\nRequest options for the Acme client.",
+      "types": [
+        {
+          "name": "Config",
+          "kind": "struct",
+          "decl": [
+            {
+              "t": "type Config struct {\n\tAPIKey string\n}"
+            }
+          ],
+          "doc": "Config holds request settings.",
+          "fields": [
+            {
+              "name": "APIKey",
+              "type": [
+                {
+                  "t": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "RequestOption",
+          "kind": "defined",
+          "decl": [
+            {
+              "t": "type RequestOption func(*"
+            },
+            {
+              "t": "Config",
+              "ref": {
+                "name": "Config"
+              }
+            },
+            {
+              "t": ")"
+            }
+          ],
+          "doc": "RequestOption configures a request.",
+          "funcs": [
+            {
+              "name": "WithAPIKey",
+              "decl": [
+                {
+                  "t": "func WithAPIKey(key string) "
+                },
+                {
+                  "t": "RequestOption",
+                  "ref": {
+                    "name": "RequestOption"
+                  }
+                }
+              ],
+              "doc": "WithAPIKey sets the API key.",
+              "params": [
+                {
+                  "name": "key",
+                  "type": [
+                    {
+                      "t": "string"
+                    }
+                  ]
+                }
+              ],
+              "results": [
+                {
+                  "type": [
+                    {
+                      "t": "RequestOption",
+                      "ref": {
+                        "name": "RequestOption"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
