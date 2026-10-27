@@ -21,6 +21,7 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 	flags.SetOutput(stderr)
 	output := flags.String("o", "", "write the artifact to `file` instead of stdout")
 	exclude := flags.String("exclude", "", "comma-separated package `patterns` to skip")
+	excludeSymbols := flags.String("exclude-symbols", "", "comma-separated symbol `patterns` to skip, such as Name, Type.Member, or dir.Name")
 	comments := flags.String("comments", string(extract.CommentsMarkdown), "doc comment `syntax`: markdown or godoc")
 	goos := flags.String("goos", "linux", "GOOS used to select files")
 	goarch := flags.String("goarch", "amd64", "GOARCH used to select files")
@@ -51,17 +52,18 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 	}
 
 	artifact, err := extract.Extract(extract.Options{
-		Dir:       dir,
-		Patterns:  flags.Args(),
-		Exclude:   splitList(*exclude),
-		Comments:  syntax,
-		GOOS:      *goos,
-		GOARCH:    *goarch,
-		Tags:      splitList(*tags),
-		Internal:  *internal,
-		NoParent:  *noParent,
-		Private:   privatePatterns(),
-		Generator: extract.Generator{Name: toolName, Version: version(), Go: runtime.Version()},
+		Dir:            dir,
+		Patterns:       flags.Args(),
+		Exclude:        splitList(*exclude),
+		ExcludeSymbols: splitList(*excludeSymbols),
+		Comments:       syntax,
+		GOOS:           *goos,
+		GOARCH:         *goarch,
+		Tags:           splitList(*tags),
+		Internal:       *internal,
+		NoParent:       *noParent,
+		Private:        privatePatterns(),
+		Generator:      extract.Generator{Name: toolName, Version: version(), Go: runtime.Version()},
 	})
 	if err != nil {
 		return fail(stderr, err)

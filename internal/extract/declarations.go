@@ -18,9 +18,11 @@ type extractor struct {
 	private    []string
 	imports    map[string]map[string]string
 	exported   map[string]bool
+	dir        string
+	symbols    symbolFilter
 }
 
-func newExtractor(src *source, dpkg *doc.Package, modulePath string, names map[string]string, opts Options) *extractor {
+func newExtractor(src *source, dpkg *doc.Package, modulePath string, names map[string]string, opts Options, symbols symbolFilter) *extractor {
 	e := &extractor{
 		docRenderer: newDocRenderer(dpkg, src.importPath, modulePath, opts.Private, opts.Comments),
 		fset:        src.fset,
@@ -29,6 +31,8 @@ func newExtractor(src *source, dpkg *doc.Package, modulePath string, names map[s
 		private:     opts.Private,
 		imports:     map[string]map[string]string{},
 		exported:    map[string]bool{},
+		dir:         src.relDir,
+		symbols:     symbols,
 	}
 	for _, file := range src.files {
 		filename := src.fset.File(file.Pos()).Name()
@@ -144,12 +148,14 @@ func (e *extractor) typ(typ *doc.Type) Type {
 	switch t := spec.Type.(type) {
 	case *ast.StructType:
 		out.Kind = KindStruct
+		removedLines = e.dropExcludedMembers(typ.Name, t.Fields)
 		for _, field := range t.Fields.List {
 			out.Fields = append(out.Fields, e.fields(field, typ.Decl)...)
 		}
-		removedLines = e.stripFieldComments(t.Fields)
+		removedLines = append(removedLines, e.stripFieldComments(t.Fields)...)
 	case *ast.InterfaceType:
 		out.Kind = KindInterface
+		removedLines = e.dropExcludedMembers(typ.Name, t.Methods)
 		for _, field := range t.Methods.List {
 			if len(field.Names) == 0 {
 				if embeddedName(field.Type) != "" {
@@ -161,7 +167,7 @@ func (e *extractor) typ(typ *doc.Type) Type {
 				out.Methods = append(out.Methods, method)
 			}
 		}
-		removedLines = e.stripFieldComments(t.Methods)
+		removedLines = append(removedLines, e.stripFieldComments(t.Methods)...)
 	}
 	if spec.Assign.IsValid() {
 		out.Kind = KindAlias
@@ -182,6 +188,39 @@ func typeSpec(typ *doc.Type) *ast.TypeSpec {
 type lineRange struct {
 	after int
 	last  int
+}
+
+func (e *extractor) dropExcludedMembers(typeName string, fields *ast.FieldList) []lineRange {
+	if fields == nil || len(e.symbols) == 0 {
+		return nil
+	}
+	var removed []lineRange
+	kept := fields.List[:0]
+	excluded := func(name string) bool {
+		return name != "" && e.symbols.matches(e.dir, typeName+"."+name)
+	}
+	for _, field := range fields.List {
+		if len(field.Names) > 0 {
+			names := field.Names[:0]
+			for _, name := range field.Names {
+				if !excluded(name.Name) {
+					names = append(names, name)
+				}
+			}
+			field.Names = names
+		}
+		if len(field.Names) > 0 || (field.Names == nil && !excluded(embeddedName(field.Type))) {
+			kept = append(kept, field)
+			continue
+		}
+		start := field.Pos()
+		if field.Doc != nil {
+			start = field.Doc.Pos()
+		}
+		removed = append(removed, lineRange{after: e.fset.Position(start).Line - 1, last: e.fset.Position(field.End()).Line})
+	}
+	fields.List = kept
+	return removed
 }
 
 func (e *extractor) stripFieldComments(fields *ast.FieldList) []lineRange {

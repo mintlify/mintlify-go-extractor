@@ -29,6 +29,10 @@
 //		Write the artifact to file instead of stdout.
 //	-exclude list
 //		Comma-separated package patterns to skip.
+//	-exclude-symbols list
+//		Comma-separated symbol patterns to skip: a name (NewClient), a method
+//		or field (Client.Debug), or either after its package directory
+//		(option.WithDebugLog), with * and ? wildcards.
 //	-comments syntax
 //		Doc comment syntax: markdown (default) or godoc.
 //	-goos, -goarch

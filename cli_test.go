@@ -36,8 +36,9 @@ func TestHelp(t *testing.T) {
 
 func TestInvalidFlags(t *testing.T) {
 	cases := map[string][]string{
-		"unknown flag":     {"-nope"},
-		"invalid comments": {"-comments", "html"},
+		"unknown flag":           {"-nope"},
+		"invalid comments":       {"-comments", "html"},
+		"invalid symbol pattern": {"-exclude-symbols", "Client["},
 	}
 	for name, args := range cases {
 		t.Run(name, func(t *testing.T) {
@@ -76,6 +77,25 @@ func TestStdout(t *testing.T) {
 	}
 	if len(artifact.Packages) != 1 || artifact.Packages[0].ImportPath != "example.com/acme/option" {
 		t.Errorf("unexpected packages: %+v", artifact.Packages)
+	}
+}
+
+func TestExcludeSymbols(t *testing.T) {
+	t.Setenv("GOPRIVATE", "")
+	code, stdout, stderr := runCLI(t, basicModule, "-exclude-symbols", "Config, option.WithAPIKey", "./option")
+	if code != 0 {
+		t.Fatalf("code = %d, stderr = %q", code, stderr)
+	}
+	pkg := decode(t, []byte(stdout)).Packages[0]
+	for _, typ := range pkg.Types {
+		if typ.Name == "Config" {
+			t.Error("Config was not excluded")
+		}
+	}
+	for _, fn := range pkg.Funcs {
+		if fn.Name == "WithAPIKey" {
+			t.Error("WithAPIKey was not excluded")
+		}
 	}
 }
 

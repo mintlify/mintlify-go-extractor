@@ -18,14 +18,15 @@ import (
 )
 
 type Options struct {
-	Dir      string
-	Patterns []string
-	Exclude  []string
-	Comments CommentSyntax
-	GOOS     string
-	GOARCH   string
-	Tags     []string
-	Internal bool
+	Dir            string
+	Patterns       []string
+	Exclude        []string
+	ExcludeSymbols []string
+	Comments       CommentSyntax
+	GOOS           string
+	GOARCH         string
+	Tags           []string
+	Internal       bool
 	// NoParent requires go.mod in Dir itself. Without it the module root is
 	// found the way the go command finds it, by walking up from Dir, which a
 	// shared worker must not do: the first go.mod above a checkout could belong
@@ -49,6 +50,10 @@ var modulePattern = regexp.MustCompile(`(?m)^\s*module\s+("[^"]+"|\S+)`)
 func Extract(opts Options) (*Artifact, error) {
 	if opts.Comments == "" {
 		opts.Comments = CommentsMarkdown
+	}
+	symbols, err := compileSymbolPatterns(opts.ExcludeSymbols)
+	if err != nil {
+		return nil, err
 	}
 	root, modulePath, err := findModule(opts.Dir, opts.NoParent)
 	if err != nil {
@@ -105,10 +110,11 @@ func Extract(opts Options) (*Artifact, error) {
 		Packages:      []Package{},
 	}
 	for _, src := range sources {
-		pkg, err := extractPackage(src, modulePath, names, opts)
+		pkg, err := extractPackage(src, modulePath, names, opts, symbols)
 		if err != nil {
 			return nil, err
 		}
+		symbols.apply(&pkg)
 		artifact.Packages = append(artifact.Packages, pkg)
 	}
 	return artifact, nil
@@ -394,12 +400,12 @@ func readRegular(path string, limit int64) ([]byte, bool, error) {
 	return data, true, nil
 }
 
-func extractPackage(src *source, modulePath string, names map[string]string, opts Options) (Package, error) {
+func extractPackage(src *source, modulePath string, names map[string]string, opts Options, symbols symbolFilter) (Package, error) {
 	dpkg, err := doc.NewFromFiles(src.fset, src.files, src.importPath)
 	if err != nil {
 		return Package{}, err
 	}
-	e := newExtractor(src, dpkg, modulePath, names, opts)
+	e := newExtractor(src, dpkg, modulePath, names, opts, symbols)
 	pkgDoc, pkgDeprecated := e.render(dpkg.Doc)
 	readme, err := readReadme(src.dir)
 	if err != nil {

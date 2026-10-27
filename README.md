@@ -22,18 +22,27 @@ go tool mintlify-go-extractor -o go.json
 ```text
 mintlify-go-extractor [flags] [packages]
 
-packages          Package patterns relative to the module root (default "./...")
--o file           Write the artifact to file instead of stdout
--exclude list     Comma-separated package patterns to skip
--comments syntax  Doc comment syntax: markdown (default) or godoc
--goos, -goarch    Build context used to select files (default linux/amd64)
--tags list        Comma-separated build tags used to select files
--internal         Include internal packages
--no-parent        Require go.mod in the target directory instead of searching parent directories
--version          Print the version and exit
+packages               Package patterns relative to the module root (default "./...")
+-o file                Write the artifact to file instead of stdout
+-exclude list          Comma-separated package patterns to skip
+-exclude-symbols list  Comma-separated symbol patterns to skip
+-comments syntax       Doc comment syntax: markdown (default) or godoc
+-goos, -goarch         Build context used to select files (default linux/amd64)
+-tags list             Comma-separated build tags used to select files
+-internal              Include internal packages
+-no-parent             Require go.mod in the target directory instead of searching parent directories
+-version               Print the version and exit
 ```
 
 Package patterns follow `go` command syntax: `./...`, `./option`, `./option/...`, or full import paths.
+
+### Excluding symbols
+
+`-exclude-symbols` leaves individual types, functions, methods, fields, constants, and variables out of the artifact, for exported symbols that should not appear in the reference. Each pattern is matched against a symbol's name (`Client`, `NewClient`), a method or field as `Type.Member` (`Client.Debug`), or either form after the package's directory (`option.WithDebugLog`, `option.Config.Debug`). Patterns use the wildcards of Go's `path.Match` (`*`, `?`, `[...]`): `Legacy*` matches every name that starts with `Legacy` in every package. A constant or variable declared in a group is excluded only when every name in its group matches.
+
+```bash
+mintlify-go-extractor -o go.json -exclude-symbols 'Client.Debug,NewLegacyClient,Legacy*'
+```
 
 The module root is found the way the `go` command finds it, by walking up from the target directory to the nearest `go.mod`. Pass `-no-parent` when the extractor runs over checkouts that sit side by side, so a `go.mod` above the checkout can never pull its siblings into the artifact.
 
